@@ -196,7 +196,7 @@ def get_taskpackageschedule_data(tablename):
 
 def taskpackageschedule_insert(data):
     # taskpackages_taskpackagescheduleset 表数据的迁移
-    conn = psycopg2.connect(dbname="mmanageV7.0",
+    conn = psycopg2.connect(dbname="mmanageV8.0",
                             user="postgres",
                             password="Lantucx2018",
                             host="localhost",
@@ -225,7 +225,7 @@ if __name__ == '__main__':
     # get_taskpackageowner_data("taskpackages_taskpackageowner")
 
     # 迁移进度表
-    # get_taskpackageschedule_data("taskpackages_taskpackagescheduleset")
+    get_taskpackageschedule_data("taskpackages_taskpackagescheduleset")
 
     # get_data()
     pass

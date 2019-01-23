@@ -42,12 +42,12 @@ router.register(r'regiontasks', RegionTaskView, base_name='regiontasks')
 
 
 urlpatterns = [
-    url(r'^v7/admin/', admin.site.urls),
-    # url(r'^v7/xadmin/', xadmin.site.urls),
-    url(r'^v7/login/$', obtain_jwt_token),
-    url(r'^v7/', include(router.urls)),
-    url(r'^v7/docs/', include_docs_urls(title=u"库管系统API")),
-    url(r'^v7/media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
-    url(r'^v7/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^v8/admin/', admin.site.urls),
+    # url(r'^v8/xadmin/', xadmin.site.urls),
+    url(r'^v8/login/$', obtain_jwt_token),
+    url(r'^v8/', include(router.urls)),
+    url(r'^v8/docs/', include_docs_urls(title=u"库管系统API")),
+    url(r'^v8/media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
+    url(r'^v8/api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 

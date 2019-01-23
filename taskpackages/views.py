@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -13,7 +14,7 @@ from taskpackages.models import TaskPackage, TaskPackageSon, TaskPackageOwner, E
 from users.models import User
 from utils.permission import AdminPerssion
 from .serializers import TaskPackageSerializer, TaskPackageSonSerializer, TaskPackageOwnerSerializer, \
-    EchartTaskpackageSerializer, EchartScheduleSerializer, ScheduleSerializer,RegionTaskSerializer
+    EchartTaskpackageSerializer, EchartScheduleSerializer, ScheduleSerializer, RegionTaskSerializer
 
 
 class TaskPackagePagination(PageNumberPagination):
@@ -257,3 +258,48 @@ class RegionTaskView(mixins.ListModelMixin, mixins.CreateModelMixin, GenericView
         else:
             return None
 
+class RegionTaskChunkUploadView(mixins.ListModelMixin, mixins.CreateModelMixin, GenericViewSet):
+    """
+    分块上传文件
+    """
+    # permission_classes = [IsAuthenticated, AdminPerssion]
+    serializer_class = RegionTaskSerializer
+
+    def get_permissions(self):
+        if self.action == "list":
+            return [IsAuthenticated()]
+        return [IsAuthenticated(), AdminPerssion()]
+
+    def get_queryset(self):
+        if self.action == "list":
+            regiontask_name = self.request.query_params.get("regiontask_name")
+            if regiontask_name:
+                return RegionTask.objects.filter(name=regiontask_name).order_by('id')
+            else:
+                return RegionTask.objects.all().order_by('id')
+        else:
+            return None
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
+# 子任务包文件分块上传
+class TaskPackageChunkViewSet(CreateModelMixin, ListModelMixin, GenericViewSet):
+    queryset = TaskPackageChunk.objects.all()
+    serializer_class = TaskPackageChunkSerializer
+"""
