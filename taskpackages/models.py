@@ -16,10 +16,10 @@ def user_directory_path(instance, filename):
 
 def file_chunk_path(instance, filename):
     return 'file_chunk/{0}/{1}/{2}/{3}/{4}'.format(
+        datetime.now().strftime("%Y"),
         datetime.now().strftime("%m"),
         datetime.now().strftime("%d"),
-        datetime.now().strftime("%H-%M-%S-%f"),
-        instance.file_md5,
+        instance.filemd5,
         filename)
 
 
@@ -143,6 +143,8 @@ class RegionTask(models.Model):
     mapindexschedulemapservice = models.CharField(max_length=1000, null=True, verbose_name=u"接图表进度服务")
     describe = models.CharField(max_length=2000, null=True, verbose_name=u"描述信息")
     createtime = models.DateTimeField(auto_now_add=True, null=True, verbose_name=u"创建时间")
+    md5 = models.CharField(max_length=32, null=True, verbose_name=u"文件MD5")
+
 
     class Meta:
         verbose_name = u'任务区域'
@@ -156,14 +158,6 @@ class RegionTask(models.Model):
 class RegionTaskMerge(models.Model):
     name = models.CharField(error_messages={"unique": u"任务区域已存在"}, max_length=200, unique=True, null=True,
                             verbose_name=u"任务区域")
-    status = models.CharField(max_length=200, default="处理中", verbose_name=u"状态")
-    mapindexsde = models.CharField(max_length=1000, null=True, verbose_name="接图表sde")
-    rgssde = models.CharField(max_length=1000, null=True, verbose_name="rgssde")
-    basemapservice = models.CharField(max_length=1000, null=True, verbose_name=u"底图服务")
-    mapindexfeatureservice = models.CharField(max_length=1000, null=True, verbose_name=u"接图表要素服务")
-    mapindexmapservice = models.CharField(max_length=1000, null=True, verbose_name=u"接图表地图服务")
-    mapindexschedulemapservice = models.CharField(max_length=1000, null=True, verbose_name=u"接图表进度服务")
-    describe = models.CharField(max_length=2000, null=True, verbose_name=u"描述信息")
     createtime = models.DateTimeField(auto_now_add=True, null=True, verbose_name=u"创建时间")
     file = models.FileField(upload_to=file_chunk_path, null=True, blank=True, verbose_name=u"任务包文件")
     md5 = models.CharField(max_length=32, null=True, verbose_name=u"文件MD5")
@@ -176,26 +170,17 @@ class RegionTaskMerge(models.Model):
         return self.name
 
 
-
-
 # 地图区域接图表分块上传模型
 @python_2_unicode_compatible
 class RegionTaskChunk(models.Model):
-    name = models.CharField(max_length=200, null=True,verbose_name=u"任务区域")
-    file_chunk = models.FileField(upload_to=file_chunk_path, null=True, verbose_name=u"文件切片")
+    name = models.CharField(max_length=200, null=True, verbose_name=u"任务区域")
+    file = models.FileField(upload_to=file_chunk_path, null=True, verbose_name=u"文件切片")
     chunk = models.IntegerField(null=True, verbose_name=u"第几个")
     chunks = models.IntegerField(null=True, verbose_name=u"共第几个")
-    file_md5 = models.CharField(max_length=128, null=True, verbose_name=u"MD5")
-    chunk_md5 = models.CharField(max_length=128, null=True, verbose_name="文件切块md5")
+    filemd5 = models.CharField(max_length=128, null=True, verbose_name=u"MD5")
+    chunkmd5 = models.CharField(max_length=128, null=True, verbose_name="文件切块md5")
     createtime = models.DateTimeField(auto_now_add=True, verbose_name=u"创建时间")
-    status = models.CharField(max_length=200, default="处理中", verbose_name=u"状态")
-    mapindexsde = models.CharField(max_length=1000, null=True, verbose_name="接图表sde")
-    rgssde = models.CharField(max_length=1000, null=True, verbose_name="rgssde")
-    basemapservice = models.CharField(max_length=1000, null=True, verbose_name=u"底图服务")
-    mapindexfeatureservice = models.CharField(max_length=1000, null=True, verbose_name=u"接图表要素服务")
-    mapindexmapservice = models.CharField(max_length=1000, null=True, verbose_name=u"接图表地图服务")
-    mapindexschedulemapservice = models.CharField(max_length=1000, null=True, verbose_name=u"接图表进度服务")
-    describe = models.CharField(max_length=2000, null=True, verbose_name=u"描述信息")
+    status = models.CharField(max_length=128, default=u"未校验", verbose_name=u"校验是否成功")
 
     class Meta:
         verbose_name = u"文件切片"
@@ -203,23 +188,6 @@ class RegionTaskChunk(models.Model):
 
     def __str__(self):
         return self.name
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 """

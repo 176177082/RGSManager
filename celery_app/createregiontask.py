@@ -6,6 +6,8 @@ import arcpy
 import shutil
 from datetime import datetime
 import psycopg2
+from unrar import rarfile
+
 from celery_app import app
 from ziptools import zipUpFolder
 import zipfile
@@ -16,24 +18,31 @@ sys.setdefaultencoding('utf8')
 
 @app.task
 def createregiontask(regiontask_id, regiontask_filepath):
+
     # 解压文件
     file_dir = os.path.dirname(regiontask_filepath)
-    r = zipfile.is_zipfile(regiontask_filepath)
-    if r:
+    z = zipfile.is_zipfile(regiontask_filepath)
+    r = rarfile.is_rarfile(regiontask_filepath)
+
+    if z:
         fz = zipfile.ZipFile(regiontask_filepath, 'r')
         for file in fz.namelist():
             fz.extract(file, file_dir)
+        filename = regiontask_filepath.split("\\")[-1].split(".zip")[0]
+        unzipfile = os.path.join(file_dir, filename)
+        print unzipfile
+    elif r:
+        fz = rarfile.RarFile(regiontask_filepath, 'r')
+        for file in fz.namelist():
+            fz.extract(file, file_dir)
+        filename = regiontask_filepath.split("\\")[-1].split(".rar")[0]
+        unrarfile = os.path.join(file_dir, filename)
+        print unrarfile
     else:
-        print('This is not zip')
-
-    filename = regiontask_filepath.split("\\")[-1].split(".zip")[0]
-    unzipfile = os.path.join(file_dir, filename)
-    print unzipfile
-
-    # 操作空间库
+        print('This is not zip or rar')
+        return False
 
     # 修改关系库中的数据
-    dbname = u"mmanageV7.0"
     tablename = u"taskpackages_regiontask"
     status = u"处理完成"
     basemapservice = u'basemapservice'
@@ -42,14 +51,14 @@ def createregiontask(regiontask_id, regiontask_filepath):
     mapindexschedulemapservice = u"mapindexschedulemapservice"
 
 
-    changeDJdbregiontasktable(dbname, tablename, regiontask_id, status, basemapservice,
+    change_db_regiontasktable(tablename, regiontask_id, status, basemapservice,
                               mapindexfeatureservice, mapindexmapservice, mapindexschedulemapservice)
     return True
 
 
-def changeDJdbregiontasktable(dbname, tablename, regiontask_id, status, basemapservice,
+def change_db_regiontasktable(tablename, regiontask_id, status, basemapservice,
                               mapindexfeatureservice, mapindexmapservice, mapindexschedulemapservice):
-    conn = psycopg2.connect(dbname=dbname,
+    conn = psycopg2.connect(dbname=u"mmanageV8.0",
                             user=u"postgres",
                             password=u"Lantucx2018",
                             host=u"localhost",
@@ -63,4 +72,8 @@ def changeDJdbregiontasktable(dbname, tablename, regiontask_id, status, basemaps
 
 
 if __name__ == "__main__":
-    pass
+    id14 = u"D:\\code\\RGSManager\\media\\data\\2019\\02\\14\\2019-02-14-14-29-34-035000\\gb.gdb.zip"
+    id15 = u"D:\\code\\RGSManager\\media\\data\\2019\\02\\14\\2019-02-14-14-30-05-055000\\gb.gdb.rar"
+
+    # createregiontask(14, id14)
+    createregiontask(15, id15)

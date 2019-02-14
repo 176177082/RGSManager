@@ -10,11 +10,12 @@ from rest_framework import status
 from rest_framework.viewsets import GenericViewSet
 from rest_framework import mixins
 from taskpackages.models import TaskPackage, TaskPackageSon, TaskPackageOwner, EchartTaskPackage, EchartSchedule, \
-    TaskPackageScheduleSet, RegionTask
+    TaskPackageScheduleSet, RegionTask, RegionTaskChunk
 from users.models import User
 from utils.permission import AdminPerssion
 from .serializers import TaskPackageSerializer, TaskPackageSonSerializer, TaskPackageOwnerSerializer, \
-    EchartTaskpackageSerializer, EchartScheduleSerializer, ScheduleSerializer, RegionTaskSerializer
+    EchartTaskpackageSerializer, EchartScheduleSerializer, ScheduleSerializer, RegionTaskSerializer, \
+    RegionTaskChunkSerializer
 
 
 class TaskPackagePagination(PageNumberPagination):
@@ -62,16 +63,16 @@ class TaskPackageViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, Generic
         # 访问接口文档时,会访问这个函数,此时request is None,如果加了过滤之后,访问接口文档时会报警告
         # UserWarning: <class 'taskpackages.views.TaskPackageViewSet'> is not compatible with schema generation
         #   "{} is not compatible with schema generation".format(view.__class__)
-        print self.request
+        # print self.request
         # 防止访问接口文档时报警告
         if self.request is not None:
             user = self.request.user
             if self.action == 'list':
                 regiontask_name = self.request.query_params.get("regiontask_name")
                 if user.isadmin:
-                    return TaskPackage.objects.filter(regiontask_name=regiontask_name, isdelete=False)
+                    return TaskPackage.objects.filter(regiontask_name=regiontask_name, isdelete=False).order_by("id")
                 else:
-                    return TaskPackage.objects.filter(regiontask_name=regiontask_name, owner=user.username, isdelete=False)
+                    return TaskPackage.objects.filter(regiontask_name=regiontask_name, owner=user.username, isdelete=False).order_by("id")
             return None
         return []
 
@@ -263,7 +264,7 @@ class RegionTaskChunkUploadView(mixins.ListModelMixin, mixins.CreateModelMixin, 
     分块上传文件
     """
     # permission_classes = [IsAuthenticated, AdminPerssion]
-    serializer_class = RegionTaskSerializer
+    serializer_class = RegionTaskChunkSerializer
 
     def get_permissions(self):
         if self.action == "list":
@@ -274,21 +275,11 @@ class RegionTaskChunkUploadView(mixins.ListModelMixin, mixins.CreateModelMixin, 
         if self.action == "list":
             regiontask_name = self.request.query_params.get("regiontask_name")
             if regiontask_name:
-                return RegionTask.objects.filter(name=regiontask_name).order_by('id')
+                return RegionTaskChunk.objects.filter(name=regiontask_name).order_by('id')
             else:
-                return RegionTask.objects.all().order_by('id')
+                return RegionTaskChunk.objects.all().order_by('id')
         else:
             return None
-
-
-
-
-
-
-
-
-
-
 
 
 

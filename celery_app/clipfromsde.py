@@ -88,7 +88,7 @@ def clipfromsde(mapindexsdepath, rgssdepath, mapnumlist, MEDIA, taskname, taskpa
 
     outZipFile = os.path.join(MEDIA, taskdirnameup, taskname + u".zip")
     zipUpFolder(taskpath, outZipFile)
-    dbname = u"mmanageV7.0"
+    dbname = u"mmanageV8.0"
     tablename = u"taskpackages_taskpackage"
     taskpackagesontablename = u"taskpackages_taskpackageson"
     statusfieldname = u"status"

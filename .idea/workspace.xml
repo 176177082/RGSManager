@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3f9b5f5d-a84d-4341-a601-a79ce4f258d0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/celery_app/regionchunk.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utils/file_chunk.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RGSManager/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/RGSManager/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/RGSManager/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/RGSManager/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrate_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/migrate_db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/celery_app/celeryconfig.py" beforeDir="false" afterPath="$PROJECT_DIR$/celery_app/celeryconfig.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/celery_app/clipfromsde.py" beforeDir="false" afterPath="$PROJECT_DIR$/celery_app/clipfromsde.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/celery_app/createregiontask.py" beforeDir="false" afterPath="$PROJECT_DIR$/celery_app/createregiontask.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/taskpackages/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/taskpackages/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/taskpackages/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/taskpackages/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/taskpackages/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/taskpackages/views.py" afterDir="false" />
@@ -20,9 +23,12 @@
     <SUITE FILE_PATH="coverage/RGSManager$migrate_db_V7.coverage" NAME="migrate_db_V7 Coverage Results" MODIFIED="1547542453550" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/RGSManager$migrate_db.coverage" NAME="migrate_db Coverage Results" MODIFIED="1548208853461" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/RGSManageV5$tests.coverage" NAME="tests Coverage Results" MODIFIED="1546657035803" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/taskpackages" />
+    <SUITE FILE_PATH="coverage/RGSManager$regionchunk.coverage" NAME="regionchunk Coverage Results" MODIFIED="1550124361984" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/celery_app" />
+    <SUITE FILE_PATH="coverage/RGSManager$createregiontask.coverage" NAME="createregiontask Coverage Results" MODIFIED="1550126184765" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/celery_app" />
     <SUITE FILE_PATH="coverage/RGSManager$tests__1_.coverage" NAME="tests (1) Coverage Results" MODIFIED="1547707056964" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/taskpackages" />
     <SUITE FILE_PATH="coverage/RGSManager$tests.coverage" NAME="tests Coverage Results" MODIFIED="1547621856926" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/users" />
     <SUITE FILE_PATH="coverage/RGSManageV5$unittest.coverage" NAME="unittest Coverage Results" MODIFIED="1546519931085" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/RGSManager$file_chunk.coverage" NAME="file_chunk Coverage Results" MODIFIED="1550023805283" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utils" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -135,34 +141,39 @@
     <session id="961304733">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="6" />
           <entry key="project.open.time.0" value="2" />
           <entry key="project.open.time.1" value="1" />
-          <entry key="project.open.time.8" value="1" />
-          <entry key="project.opened" value="4" />
+          <entry key="project.open.time.7" value="2" />
+          <entry key="project.open.time.8" value="3" />
+          <entry key="project.open.time.9" value="1" />
+          <entry key="project.opened" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="37" />
+          <entry key="bat" value="1" />
+          <entry key="py" value="61" />
+          <entry key="txt" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="37" />
+          <entry key="PLAIN_TEXT" value="2" />
+          <entry key="Python" value="61" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="Django Console" value="253" />
-          <entry key="py" value="2977" />
+          <entry key="Django Console" value="254" />
+          <entry key="py" value="4731" />
           <entry key="txt" value="17" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="17" />
-          <entry key="Python" value="3230" />
+          <entry key="Python" value="4985" />
         </counts>
       </usages-collector>
     </session>
@@ -256,62 +267,40 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/taskpackages/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-342">
-              <caret line="155" column="21" selection-start-line="155" selection-start-column="6" selection-end-line="155" selection-end-column="21" />
-              <folding>
-                <element signature="e#6751#7679#0" />
-                <element signature="e#7762#8404#0" />
-                <marker date="1548227047212" expanded="true" signature="7065:9854" ph="..." />
-              </folding>
+            <state relative-caret-position="304">
+              <caret line="141" column="94" lean-forward="true" selection-start-line="141" selection-start-column="94" selection-end-line="141" selection-end-column="94" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/taskpackages/serializers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="66">
-              <caret line="361" column="37" lean-forward="true" selection-start-line="361" selection-start-column="37" selection-end-line="361" selection-end-column="37" />
+            <state relative-caret-position="160">
+              <caret line="327" selection-start-line="327" selection-end-line="327" />
               <folding>
                 <element signature="e#24#63#0" expanded="true" />
-                <element signature="e#13487#18752#0" />
-                <marker date="1548235738862" expanded="true" signature="12273:12286" ph="..." />
-                <marker date="1548235738862" expanded="true" signature="20126:20163" ph="..." />
+                <marker date="1550126280832" expanded="true" signature="12324:12337" ph="..." />
+                <marker date="1550126280832" expanded="true" signature="20123:20160" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/migrate_db.py">
+        <entry file="file://$PROJECT_DIR$/celery_app/regionchunk.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
-              <caret line="195" selection-start-line="195" selection-end-line="195" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/taskpackages/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="366">
-              <caret line="233" column="13" lean-forward="true" selection-start-line="233" selection-start-column="13" selection-end-line="233" selection-end-column="13" />
+            <state relative-caret-position="19">
+              <caret line="130" column="45" selection-start-line="130" selection-start-column="45" selection-end-line="130" selection-end-column="45" />
               <folding>
-                <element signature="e#24#63#0" expanded="true" />
-                <element signature="e#10760#10851#0" />
+                <element signature="e#95#109#0" expanded="true" />
+                <marker date="1550124361669" expanded="true" signature="1471:1478" ph="..." />
+                <marker date="1550124361669" expanded="true" signature="3571:4325" ph="..." />
+                <marker date="1550124361669" expanded="true" signature="3939:3944" ph="..." />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/RGSManager/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="50" column="13" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -319,8 +308,29 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RGSManager/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1022">
-              <caret line="172" lean-forward="true" selection-start-line="172" selection-end-line="172" />
+            <state relative-caret-position="154">
+              <caret line="83" selection-start-line="83" selection-end-line="83" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/celery_app/createregiontask.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-351">
+              <caret line="13" selection-start-line="13" selection-end-line="13" />
+              <folding>
+                <element signature="e#59#69#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/celery_app/celeryconfig.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1276">
+              <caret line="58" selection-start-line="58" selection-end-line="58" />
             </state>
           </provider>
         </entry>
@@ -349,6 +359,9 @@
       <find>5.0</find>
       <find>setdefaultencoding</find>
       <find>6.0</find>
+      <find>chunk</find>
+      <find>_</find>
+      <find>filechunk</find>
     </findStrings>
     <replaceStrings>
       <replace>V5</replace>
@@ -387,16 +400,19 @@
         <option value="$PROJECT_DIR$/users/tests.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/taskpackages/tests.py" />
-        <option value="$PROJECT_DIR$/celery_app/createregiontask.py" />
-        <option value="$PROJECT_DIR$/celery_app/clipfromsde.py" />
         <option value="$PROJECT_DIR$/启动celery.bat" />
         <option value="$PROJECT_DIR$/users/models.py" />
-        <option value="$PROJECT_DIR$/taskpackages/views.py" />
-        <option value="$PROJECT_DIR$/taskpackages/models.py" />
-        <option value="$PROJECT_DIR$/RGSManager/urls.py" />
         <option value="$PROJECT_DIR$/RGSManager/settings.py" />
         <option value="$PROJECT_DIR$/migrate_db.py" />
+        <option value="$PROJECT_DIR$/utils/file_chunk.py" />
+        <option value="$PROJECT_DIR$/RGSManager/urls.py" />
+        <option value="$PROJECT_DIR$/taskpackages/views.py" />
+        <option value="$PROJECT_DIR$/taskpackages/models.py" />
+        <option value="$PROJECT_DIR$/celery_app/clipfromsde.py" />
+        <option value="$PROJECT_DIR$/celery_app/regionchunk.py" />
+        <option value="$PROJECT_DIR$/celery_app/createregiontask.py" />
         <option value="$PROJECT_DIR$/taskpackages/serializers.py" />
+        <option value="$PROJECT_DIR$/celery_app/celeryconfig.py" />
       </list>
     </option>
   </component>
@@ -416,6 +432,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -426,18 +443,22 @@
             <path>
               <item name="RGSManager" type="b2602c69:ProjectViewProjectNode" />
               <item name="RGSManager" type="462c0819:PsiDirectoryNode" />
+              <item name="celery_app" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RGSManager" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RGSManager" type="462c0819:PsiDirectoryNode" />
               <item name="RGSManager" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="RGSManager" type="b2602c69:ProjectViewProjectNode" />
               <item name="RGSManager" type="462c0819:PsiDirectoryNode" />
-              <item name="taskpackages" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -465,7 +486,51 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Django server.RGSManager">
+  <component name="RunManager" selected="Python.createregiontask">
+    <configuration name="createregiontask" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="RGSManager" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/celery_app" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/celery_app/createregiontask.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="file_chunk" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="RGSManager" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/utils" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utils/file_chunk.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="migrate_db" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="RGSManager" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -488,7 +553,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="migrate_db_V7" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="regionchunk" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="RGSManager" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -496,12 +561,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/celery_app" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/migrate_db_V7.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/celery_app/regionchunk.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -581,15 +646,19 @@
     <list>
       <item itemvalue="Django server.RGSManager" />
       <item itemvalue="Python.tests" />
-      <item itemvalue="Python.migrate_db_V7" />
       <item itemvalue="Python.tests (1)" />
       <item itemvalue="Python.migrate_db" />
+      <item itemvalue="Python.file_chunk" />
+      <item itemvalue="Python.regionchunk" />
+      <item itemvalue="Python.createregiontask" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.createregiontask" />
+        <item itemvalue="Python.regionchunk" />
+        <item itemvalue="Python.file_chunk" />
         <item itemvalue="Python.migrate_db" />
         <item itemvalue="Python.tests (1)" />
-        <item itemvalue="Python.migrate_db_V7" />
       </list>
     </recent_temporary>
   </component>
@@ -639,23 +708,24 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49932525" weight="0.19796138" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49932525" visible="true" weight="0.16845493" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.5006748" weight="0.12403599" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32793522" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4993573" weight="0.32700893" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4330357" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.36160713" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32928476" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32924107" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="manage.py@RGSManageV5" order="9" weight="0.6174785" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50064266" side_tool="true" weight="0.32700893" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.32928476" />
-      <window_info anchor="bottom" id="Terminal" order="12" weight="0.35044643" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="12" visible="true" weight="0.35044643" />
       <window_info anchor="bottom" id="Python Console" order="13" weight="0.32700893" />
       <window_info anchor="bottom" id="Reviews" order="14" />
       <window_info anchor="bottom" id="manage.py@RGSManager" order="15" weight="0.39811066" />
@@ -692,99 +762,67 @@
     <option name="LAST_COMMIT_MESSAGE" value="添加任务区域" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/taskpackages/serializers.py</url>
-          <line>297</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="Python.DjangoServer">
-        <watch expression="self.context[&quot;parser_context&quot;]" language="Python" />
-        <watch expression="self.context[&quot;request&quot;].parser_context[&quot;kwargs&quot;][&quot;pk&quot;]" language="Python" />
+        <watch expression="os.path.abspath(__file__)" language="Python" />
       </configuration>
     </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
       <expression>
-        <expression-string>self.context[&quot;request&quot;].parser_context[&quot;kwargs&quot;][&quot;pk&quot;]</expression-string>
+        <expression-string>os.path.abspath(__file__)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>self.context[&quot;request&quot;].parser_context[&quot;kwargs&quot;]</expression-string>
+        <expression-string>RegionTask.objects.get(name=instance.name)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>self.context[&quot;request&quot;].parser_context.kwargs</expression-string>
+        <expression-string>instance.name</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>self.context[&quot;request&quot;].parser_context</expression-string>
+        <expression-string>validated_data[&quot;chunks&quot;]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>self.context[&quot;request&quot;].parser_context.kwargs['pk']</expression-string>
+        <expression-string>validated_data[&quot;chunk&quot;]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>self.context[&quot;request&quot;]</expression-string>
+        <expression-string>files.values_list(&quot;filechunk&quot;)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>self.context[&quot;view&quot;].action</expression-string>
+        <expression-string>instance.filechunk</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>self.context[&quot;parser_context&quot;]</expression-string>
+        <expression-string>instance.filechunk.path</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>self.context.parser_context</expression-string>
+        <expression-string>fromdir</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>len(files.values_list(&quot;filechunk&quot;))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/users/migrations/0004_auto_20181229_0952.py" />
-    <entry file="file://$PROJECT_DIR$/users/migrations/0003_auto_20181224_1629.py" />
-    <entry file="file://$PROJECT_DIR$/users/admin.py" />
-    <entry file="file://$PROJECT_DIR$/unittest.py" />
-    <entry file="file://$PROJECT_DIR$/users/migrations/__init__.py" />
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="1067" selection-start-line="1067" selection-end-line="1067" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Python27/ArcGIS10.2/Lib/site-packages/django/core/management/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="364" lean-forward="true" selection-start-line="364" selection-end-line="364" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/manage.py" />
-    <entry file="file://C:/Python27/ArcGIS10.2/Lib/site-packages/django/utils/six.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="839" selection-start-line="839" selection-end-line="839" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Python27/ArcGIS10.2/Lib/site-packages/rest_framework/mixins.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="269">
@@ -816,8 +854,6 @@
     <entry file="file://$PROJECT_DIR$/taskpackages/migrations/0002_auto_20190107_1430.py" />
     <entry file="file://$PROJECT_DIR$/taskpackages/migrations/0003_auto_20190107_1626.py" />
     <entry file="file://$PROJECT_DIR$/RGSManager/wsgi.py" />
-    <entry file="file://$PROJECT_DIR$/celery_app/celeryconfig.py" />
-    <entry file="file://$PROJECT_DIR$/utils/exceptionhandler.py" />
     <entry file="file://C:/Python27/ArcGIS10.2/Lib/site-packages/django_filters/rest_framework/backends.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-139">
@@ -825,7 +861,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils/permission.py" />
     <entry file="file://$USER_HOME$/.PyCharm2018.2/system/python_stubs/1248084663/sys.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="106">
@@ -852,15 +887,10 @@
     <entry file="file://$PROJECT_DIR$/package.txt" />
     <entry file="file://D:/ClipTask/requirement.txt" />
     <entry file="file://$PROJECT_DIR$/README" />
-    <entry file="file://$PROJECT_DIR$/users/tests.py" />
     <entry file="file://$PROJECT_DIR$/users/serializers.py" />
-    <entry file="file://$PROJECT_DIR$/taskpackages/tests.py" />
-    <entry file="file://$PROJECT_DIR$/celery_app/createregiontask.py" />
-    <entry file="file://$PROJECT_DIR$/启动celery.bat" />
     <entry file="file://$PROJECT_DIR$/users/models.py" />
     <entry file="file://$PROJECT_DIR$/users/geckodriver.log" />
     <entry file="file://$PROJECT_DIR$/users/views.py" />
-    <entry file="file://$PROJECT_DIR$/celery_app/clipfromsde.py" />
     <entry file="file://$PROJECT_DIR$/xadmin-requirement.txt" />
     <entry file="file://C:/Python27/ArcGIS10.2/Lib/importlib/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -869,60 +899,170 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RGSManager/urls.py">
+    <entry file="file://$PROJECT_DIR$/migrate_db.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="50" column="13" selection-start-line="50" selection-start-column="13" selection-end-line="50" selection-end-column="13" />
+        <state relative-caret-position="4224">
+          <caret line="195" selection-start-line="195" selection-end-line="195" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RGSManager/settings.py">
+    <entry file="file://$PROJECT_DIR$/package111.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1022">
-          <caret line="172" lean-forward="true" selection-start-line="172" selection-end-line="172" />
+        <state relative-caret-position="198">
+          <caret line="9" column="5" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/permission.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/taskpackages/apps.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/taskpackages/admin.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/users/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/users/tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="752">
+          <caret line="76" column="37" lean-forward="true" selection-start-line="76" selection-start-column="37" selection-end-line="76" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/taskpackages/tests.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://C:/Program Files (x86)/ArcGIS/Desktop10.2/arcpy/arcpy/geoprocessing/_base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="546" selection-start-line="546" selection-end-line="546" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/file_chunk.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="14" column="27" selection-start-line="14" selection-end-line="15" />
+          <folding>
+            <element signature="e#24#63#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/taskpackages/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="366">
-          <caret line="233" column="13" lean-forward="true" selection-start-line="233" selection-start-column="13" selection-end-line="233" selection-end-column="13" />
+        <state relative-caret-position="110">
+          <caret line="65" column="28" selection-start-line="65" selection-start-column="28" selection-end-line="65" selection-end-column="28" />
           <folding>
             <element signature="e#24#63#0" expanded="true" />
-            <element signature="e#10760#10851#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/migrate_db.py">
+    <entry file="file://$PROJECT_DIR$/RGSManager/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="195" selection-start-line="195" selection-end-line="195" />
+        <state relative-caret-position="422">
+          <caret line="41" column="91" selection-start-line="41" selection-start-column="91" selection-end-line="41" selection-end-column="91" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/taskpackages/models.py">
+    <entry file="file://$PROJECT_DIR$/celery_app/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/manage.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-342">
-          <caret line="155" column="21" selection-start-line="155" selection-start-column="6" selection-end-line="155" selection-end-column="21" />
+        <state relative-caret-position="88">
+          <caret line="5" column="28" selection-start-line="5" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/启动celery.bat">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/exceptionhandler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="22">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
           <folding>
-            <element signature="e#6751#7679#0" />
-            <element signature="e#7762#8404#0" />
-            <marker date="1548227047212" expanded="true" signature="7065:9854" ph="..." />
+            <element signature="e#24#68#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/celery_app/clipfromsde.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="86">
+          <caret line="113" column="30" selection-start-line="113" selection-start-column="30" selection-end-line="113" selection-end-column="30" />
+          <folding>
+            <element signature="e#277#287#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RGSManager/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="83" selection-start-line="83" selection-end-line="83" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/celery_app/regionchunk.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="130" column="45" selection-start-line="130" selection-start-column="45" selection-end-line="130" selection-end-column="45" />
+          <folding>
+            <element signature="e#95#109#0" expanded="true" />
+            <marker date="1550124361669" expanded="true" signature="1471:1478" ph="..." />
+            <marker date="1550124361669" expanded="true" signature="3571:4325" ph="..." />
+            <marker date="1550124361669" expanded="true" signature="3939:3944" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/celery_app/createregiontask.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-351">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+          <folding>
+            <element signature="e#59#69#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/taskpackages/serializers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="66">
-          <caret line="361" column="37" lean-forward="true" selection-start-line="361" selection-start-column="37" selection-end-line="361" selection-end-column="37" />
+        <state relative-caret-position="160">
+          <caret line="327" selection-start-line="327" selection-end-line="327" />
           <folding>
             <element signature="e#24#63#0" expanded="true" />
-            <element signature="e#13487#18752#0" />
-            <marker date="1548235738862" expanded="true" signature="12273:12286" ph="..." />
-            <marker date="1548235738862" expanded="true" signature="20126:20163" ph="..." />
+            <marker date="1550126280832" expanded="true" signature="12324:12337" ph="..." />
+            <marker date="1550126280832" expanded="true" signature="20123:20160" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/celery_app/celeryconfig.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1276">
+          <caret line="58" selection-start-line="58" selection-end-line="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/taskpackages/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="141" column="94" lean-forward="true" selection-start-line="141" selection-start-column="94" selection-end-line="141" selection-end-column="94" />
         </state>
       </provider>
     </entry>

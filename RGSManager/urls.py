@@ -27,7 +27,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework.routers import DefaultRouter
 from users.views import UserListViewSet,UserViewSet
 from taskpackages.views import TaskPackageViewSet, TaskPackageSonViewSet, TaskPackageOwnerViewSet, \
-    EchartTaskpackageViewSet, EchartScheduleViewSet, ScheduleViewSet,RegionTaskView
+    EchartTaskpackageViewSet, EchartScheduleViewSet, ScheduleViewSet, RegionTaskView, RegionTaskChunkUploadView
 
 router = DefaultRouter()
 router.register(r'users', UserListViewSet, base_name='users')
@@ -39,6 +39,7 @@ router.register(r'echarttaskpackages', EchartTaskpackageViewSet, base_name='echa
 router.register(r'echartschedules', EchartScheduleViewSet, base_name='echartschedules')
 router.register(r'schedule', ScheduleViewSet, base_name='schedule')
 router.register(r'regiontasks', RegionTaskView, base_name='regiontasks')
+router.register(r'regiontaskschunk', RegionTaskChunkUploadView, base_name='regiontaskschunk')
 
 
 urlpatterns = [

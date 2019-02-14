@@ -4,11 +4,14 @@ from __future__ import unicode_literals
 from datetime import datetime
 import hashlib
 import os
+import shutil
 import zipfile
 from unrar import rarfile
 from rest_framework import serializers
 from rest_framework.exceptions import APIException
 from RGSManager.settings import BASE_DIR
+from celery_app.createregiontask import createregiontask
+from celery_app.regionchunk import regionmerge
 from models import TaskPackage, TaskPackageSon, TaskPackageOwner, EchartTaskPackage, EchartSchedule, \
     TaskPackageScheduleSet, RegionTask, RegionTaskChunk, RegionTaskMerge
 from django.conf import settings
@@ -269,9 +272,7 @@ class EchartTaskpackageSerializer(serializers.ModelSerializer):
     class Meta:
         model = EchartTaskPackage
         fields = ["user_reallyname", "count", "regiontask_name"]
-        # extra_kwargs={
-        #     "regiontask_name": {"required": True}
-        # }
+
 
 
 class EchartScheduleSerializer(serializers.ModelSerializer):
@@ -293,7 +294,8 @@ class ScheduleSerializer(serializers.ModelSerializer):
             except:
                 pass
             else:
-                raise serializers.ValidationError("新增进度失败，区域“{0}”下进度“{1}”重复".format(attrs["regiontask_name"], attrs["schedule"]))
+                raise serializers.ValidationError(
+                    "新增进度失败，区域“{0}”下进度“{1}”重复".format(attrs["regiontask_name"], attrs["schedule"]))
             return attrs
         else:
             schedule_id = self.context["request"].parser_context["kwargs"]["pk"]
@@ -308,12 +310,11 @@ class ScheduleSerializer(serializers.ModelSerializer):
             return attrs
 
 
-
 class RegionTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = RegionTask
         fields = ["id", "name", "file", "status", "basemapservice", "mapindexfeatureservice", "mapindexmapservice",
-                  "mapindexschedulemapservice"]
+                  "mapindexschedulemapservice", "describe"]
         extra_kwargs = {
             "basemapservice": {"read_only": True},
             "mapindexfeatureservice": {"read_only": True},
@@ -323,72 +324,51 @@ class RegionTaskSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         regiontask = RegionTask.objects.create(**validated_data)
-        file_path = regiontask.file.path
-
-        # 需要进入celery进行空间库操作
-        # 解压zip文件
-        file_dir = os.path.dirname(file_path)
-        # r = zipfile.is_zipfile(file_path)
-        # if r:
-        #     fz = zipfile.ZipFile(file_path, 'r')
-        #     for file in fz.namelist():
-        #         fz.extract(file,file_dir)
-        # else:
-        #     print('This is not zip')
-        #
-        # filename = file_path.split("\\")[-1].split(".zip")[0]
-        # unzipfile = os.path.join(file_dir,filename)
-        # print unzipfile
-
-        # 解压rar文件
-        f = rarfile.is_rarfile(file_path)
-        if f:
-            fz = rarfile.RarFile(file_path, 'r')
-            for file in fz.namelist():
-                fz.extract(file, file_dir)
-        else:
-            print('This is not rar')
-        filename = file_path.split("\\")[-1].split(".rar")[0]
-        unrarfile = os.path.join(file_dir, filename)
+        createregiontask.delay(regiontask.id, regiontask.file.path)
 
         return regiontask
 
 
-class TaskPackageChunkSerializer(serializers.ModelSerializer):
+class RegionTaskChunkSerializer(serializers.ModelSerializer):
     class Meta:
         model = RegionTaskChunk
-        fields = ["file_chunk", "chunk", "chunks", "file_md5", "chunk_md5", "describe", "name", "status"]
+        fields = ["file", "chunk", "chunks", "filemd5", "chunkmd5", "name"]
 
     def create(self, validated_data):
         instance = RegionTaskChunk.objects.create(name=validated_data["name"],
-                                                  file_chunk=self.context['request'].data.get('file'),
-                                                  # file_chunk=validated_data["file_chunk"],
+                                                  file=self.context['request'].data.get('file'),
+                                                  # file=validated_data["file"],
                                                   chunk=validated_data["chunk"],
                                                   chunks=validated_data["chunks"],
-                                                  file_md5=validated_data["file_md5"],
-                                                  chunk_md5=validated_data["chunk_md5"],
-                                                  describe=validated_data["describe"],
-                                                  status=validated_data["status"],
+                                                  filemd5=validated_data["filemd5"],
+                                                  chunkmd5=validated_data["chunkmd5"]
                                                   )
 
         name = instance.name
         chunk = instance.chunk
-
+        path = instance.file.path
+        filemd5 = instance.filemd5
+        chunks = instance.chunks
+        # chunkmd5 = instance.chunkmd5
+        # regionchunk.delay(path, chunkmd5, name, chunk)
         # 检验文件块md5
-        if os.path.isfile(instance.file_chunk.path):
+        if os.path.isfile(instance.file.path):
             myhash = hashlib.md5()
-            f = open(instance.file_chunk.path, 'rb')
+            f = open(instance.file.path, 'rb')
             while True:
                 b = f.read(8096)
                 if not b:
                     break
                 myhash.update(b)
             f.close()
-            print myhash.hexdigest()
-            if myhash.hexdigest() == instance.chunk_md5:
+            if myhash.hexdigest() == instance.chunkmd5:
                 # print u"文件切片MD5校验通过"
                 pass
             else:
+                path = instance.file.path.split("\\")
+                path.pop()
+                file_path = "\\".join(path)  # 读取文件块路径
+                shutil.rmtree(file_path)
                 instance.delete()
                 raise serializers.ValidationError("区域:{0};文件切片编号:{1};MD5校验错误".format(name, chunk))
                 # print u"文件切片MD5校验错误"
@@ -400,64 +380,84 @@ class TaskPackageChunkSerializer(serializers.ModelSerializer):
 
         # 合并文件
         if validated_data["chunk"] == validated_data["chunks"] - 1:
-            path_list = os.path.join(BASE_DIR, instance.file_chunk.path).split("\\")
-            path_list.pop()
-            fromdir = "\\".join(path_list)  # 读取文件块路径
-            filename = instance.name  # 合成后文件名字
-            save_path = os.path.join(BASE_DIR, u'media\\file\\{0}\\{1}\\{2}'.format(
-                datetime.now().strftime("%m"),
-                datetime.now().strftime("%d"),
-                instance.name))  # 合成后存放路径
-            if not os.path.exists(save_path):  # 判断文件夹是否存在
-                os.makedirs(save_path)
-            outfile = open(os.path.join(save_path, filename), 'wb')  # 打开合并后存储文件夹
-            num = 0
-            files = RegionTaskChunk.objects.filter(name=instance.name).order_by("chunk")  # 读取文件块名字并根据块数排序
-            while num < instance.chunks:  # 判断合并文件次数
-                file = files.values_list("file_chunk")[num][0].split("/")[-1]  # 获取单个文件名
-                filepath = os.path.join(fromdir, file)
-                infile = open(filepath, 'rb')
-                data = infile.read()
-                outfile.write(data)
-                del data
-                num += 1
-                infile.close()
-            outfile.close()
-
-            # 校验合并后文件md5
-            file = save_path + "\\" + filename  # 获取合并后文件路径
-            if os.path.isfile(file):  # 判断文件是否存在
-                myhash = hashlib.md5()
-                f = open(file, 'rb')
-                while True:
-                    b = f.read(8096)
-                    if not b:
-                        break
-                    myhash.update(b)
-                f.close()
-                print myhash.hexdigest()
-                if myhash.hexdigest() == instance.file_md5:  # 判断MD5是否与前端传的数据一致
-                    # print u"MD5校验通过"
-                    pass
-                else:
-                    raise serializers.ValidationError("文件{0}合并错误".format(instance.name))
-                    # print u"MD5校验错误"
-            else:
-                raise serializers.ValidationError("文件{0}切片丢失".format(instance.name))
-                # print u"文件不存在"
-
-            path = u'file/{0}/{1}/{2}/{3}'.format(datetime.now().strftime("%m"),
-                                                  datetime.now().strftime("%d"),
-                                                  instance.name,
-                                                  instance.name)
-            # 创建合成后文件表记录
-            instance_merge = RegionTaskMerge.objects.create(taskpackage_name=instance.name,
-                                                            describe=instance.describe,
-                                                            md5=instance.file_md5)
-            instance_merge.file = path
-            instance_merge.save()
+            regionmerge.delay(path, filemd5, name, chunks)
+            # path_list = os.path.join(BASE_DIR, instance.file.path).split("\\")
+            # path_list.pop()
+            # fromdir = "\\".join(path_list)  # 读取文件块路径
+            # filename = instance.name  # 合成后文件名字
+            # save_path = os.path.join(BASE_DIR, u'media\\file\\{0}\\{1}\\{2}\\{3}'.format(
+            #     datetime.now().strftime("%Y"),
+            #     datetime.now().strftime("%m"),
+            #     datetime.now().strftime("%d"),
+            #     instance.name))  # 合成后存放路径
+            # if not os.path.exists(save_path):  # 判断文件夹是否存在
+            #     os.makedirs(save_path)
+            # outfile = open(os.path.join(save_path, filename), 'wb')  # 打开合并后存储文件夹
+            # num = 0
+            # files = RegionTaskChunk.objects.filter(name=instance.name).order_by("chunk")  # 读取文件块名字并根据块数排序
+            # while num < instance.chunks:  # 判断合并文件次数
+            #     file = files.values_list("file")[num][0].split("/")[-1]  # 获取单个文件名
+            #     filepath = os.path.join(fromdir, file)
+            #     infile = open(filepath, 'rb')
+            #     data = infile.read()
+            #     outfile.write(data)
+            #     del data
+            #     num += 1
+            #     infile.close()
+            # outfile.close()
+            #
+            # # 校验合并后文件md5
+            # file = save_path + "\\" + filename  # 获取合并后文件路径
+            # if os.path.isfile(file):  # 判断文件是否存在
+            #     myhash = hashlib.md5()
+            #     f = open(file, 'rb')
+            #     while True:
+            #         b = f.read(8096)
+            #         if not b:
+            #             break
+            #         myhash.update(b)
+            #     f.close()
+            #     print myhash.hexdigest()
+            #     if myhash.hexdigest() == instance.filemd5:  # 判断MD5是否与前端传的数据一致
+            #         print u"合成后MD5校验通过"
+            #         pass
+            #     else:
+            #         shutil.rmtree(save_path)
+            #         shutil.rmtree(fromdir)
+            #         print u"合成后MD5校验错误"
+            #         raise serializers.ValidationError("文件{0}MD5校验错误".format(instance.name))
+            # else:
+            #     raise serializers.ValidationError("文件{0}切片丢失".format(instance.name))
+            #     # print u"文件不存在"
+            #
+            #
+            # try:
+            #     # 创建合成后文件表记录
+            #     instance_merge = RegionTaskMerge.objects.create(name=instance.name, md5=instance.filemd5)
+            #     instance_merge.file = file
+            #     instance_merge.save()
+            # except:
+            #     shutil.rmtree(fromdir)
+            #     shutil.rmtree(save_path)
+            #     print "合成记录表错误"
+            #     raise serializers.ValidationError("“{0}”合成记录数据错误".format(instance.name))
+            #
+            # try:
+            # # 创建地图区域文件表记录
+            #     instance_regiontask = RegionTask.objects.get(name=instance.name)
+            #     instance_regiontask.file = file
+            #     instance_regiontask.md5 = instance.filemd5
+            #     instance_regiontask.save()
+            # except:
+            #     shutil.rmtree(save_path)
+            #     shutil.rmtree(fromdir)
+            #     print "地区区域记录表错误"
+            #     raise serializers.ValidationError("“{0}”地图区域记录修改失败".format(instance.name))
 
         return instance
+
+
+
 
 
 
@@ -492,7 +492,7 @@ class TaskPackageChunkSerializer(serializers.ModelSerializer):
 class TaskPackageChunkSerializer(serializers.ModelSerializer):
     class Meta:
         model = TaskPackageChunk
-        fields = ["taskpackage_name", "file_chunk", "chunk", "chunks", "file_md5", "chunk_md5", "version", "describe",
+        fields = ["taskpackage_name", "file", "chunk", "chunks", "file_md5", "chunk_md5", "version", "describe",
                   "user_username", "schedule", "regiontask_name"]
 
         extra_kwargs = {
@@ -512,7 +512,7 @@ class TaskPackageChunkSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         instance = TaskPackageChunk.objects.create(taskpackage_name=validated_data["taskpackage_name"],
                                                    file_chunk=self.context['request'].data.get('file'),
-                                                   # file_chunk=validated_data["file_chunk"],
+                                                   # file_chunk=validated_data["file"],
                                                    chunk=validated_data["chunk"],
                                                    chunks=validated_data["chunks"],
                                                    file_md5=validated_data["file_md5"],
@@ -532,9 +532,9 @@ class TaskPackageChunkSerializer(serializers.ModelSerializer):
         regiontask_name = instance.regiontask_name
 
         # 检验文件块md5
-        if os.path.isfile(instance.file_chunk.path):
+        if os.path.isfile(instance.file.path):
             myhash = hashlib.md5()
-            f = open(instance.file_chunk.path, 'rb')
+            f = open(instance.file.path, 'rb')
             while True:
                 b = f.read(8096)
                 if not b:
@@ -557,7 +557,7 @@ class TaskPackageChunkSerializer(serializers.ModelSerializer):
 
         # 合并文件
         if validated_data["chunk"] == validated_data["chunks"] - 1:
-            path_list = os.path.join(BASE_DIR, instance.file_chunk.path).split("\\")
+            path_list = os.path.join(BASE_DIR, instance.file.path).split("\\")
             path_list.pop()
             fromdir = "\\".join(path_list)  # 读取文件块路径
             filename = instance.name  # 合成后文件名字
@@ -571,7 +571,7 @@ class TaskPackageChunkSerializer(serializers.ModelSerializer):
             num = 0
             files = TaskPackageChunk.objects.filter(name=instance.name).order_by("chunk")  # 读取文件块名字并根据块数排序
             while num < instance.chunks:  # 判断合并文件次数
-                file = files.values_list("file_chunk")[num][0].split("/")[-1]  # 获取单个文件名
+                file = files.values_list("file")[num][0].split("/")[-1]  # 获取单个文件名
                 filepath = os.path.join(fromdir, file)
                 infile = open(filepath, 'rb')
                 data = infile.read()
