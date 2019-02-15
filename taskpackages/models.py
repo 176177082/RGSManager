@@ -144,6 +144,7 @@ class RegionTask(models.Model):
     describe = models.CharField(max_length=2000, null=True, verbose_name=u"描述信息")
     createtime = models.DateTimeField(auto_now_add=True, null=True, verbose_name=u"创建时间")
     md5 = models.CharField(max_length=32, null=True, verbose_name=u"文件MD5")
+    servicename = models.CharField(max_length=64, error_messages={"unique": u"任务区域已存在"}, unique=True, null=True, verbose_name=u"服务名称")
 
 
     class Meta:

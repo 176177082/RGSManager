@@ -2,16 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3f9b5f5d-a84d-4341-a601-a79ce4f258d0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/celery_app/regionchunk.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/file_chunk.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RGSManager/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/RGSManager/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/celery_app/celeryconfig.py" beforeDir="false" afterPath="$PROJECT_DIR$/celery_app/celeryconfig.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/celery_app/clipfromsde.py" beforeDir="false" afterPath="$PROJECT_DIR$/celery_app/clipfromsde.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/celery_app/createregiontask.py" beforeDir="false" afterPath="$PROJECT_DIR$/celery_app/createregiontask.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/celery_app/mapindex20181206202724.sde" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/celery_app/rgs20181206202724.sde" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/taskpackages/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/taskpackages/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/taskpackages/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/taskpackages/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/taskpackages/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/taskpackages/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,7 +20,7 @@
     <SUITE FILE_PATH="coverage/RGSManager$migrate_db.coverage" NAME="migrate_db Coverage Results" MODIFIED="1548208853461" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/RGSManageV5$tests.coverage" NAME="tests Coverage Results" MODIFIED="1546657035803" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/taskpackages" />
     <SUITE FILE_PATH="coverage/RGSManager$regionchunk.coverage" NAME="regionchunk Coverage Results" MODIFIED="1550124361984" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/celery_app" />
-    <SUITE FILE_PATH="coverage/RGSManager$createregiontask.coverage" NAME="createregiontask Coverage Results" MODIFIED="1550126184765" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/celery_app" />
+    <SUITE FILE_PATH="coverage/RGSManager$createregiontask.coverage" NAME="createregiontask Coverage Results" MODIFIED="1550214802561" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/celery_app" />
     <SUITE FILE_PATH="coverage/RGSManager$tests__1_.coverage" NAME="tests (1) Coverage Results" MODIFIED="1547707056964" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/taskpackages" />
     <SUITE FILE_PATH="coverage/RGSManager$tests.coverage" NAME="tests Coverage Results" MODIFIED="1547621856926" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/users" />
     <SUITE FILE_PATH="coverage/RGSManageV5$unittest.coverage" NAME="unittest Coverage Results" MODIFIED="1546519931085" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -141,13 +137,13 @@
     <session id="961304733">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="6" />
+          <entry key="project.closed" value="7" />
           <entry key="project.open.time.0" value="2" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.7" value="2" />
-          <entry key="project.open.time.8" value="3" />
-          <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="9" />
+          <entry key="project.open.time.8" value="4" />
+          <entry key="project.open.time.9" value="2" />
+          <entry key="project.opened" value="11" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -166,14 +162,14 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Django Console" value="254" />
-          <entry key="py" value="4731" />
+          <entry key="py" value="5682" />
           <entry key="txt" value="17" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="17" />
-          <entry key="Python" value="4985" />
+          <entry key="Python" value="5936" />
         </counts>
       </usages-collector>
     </session>
@@ -267,11 +263,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/taskpackages/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="141" column="94" lean-forward="true" selection-start-line="141" selection-start-column="94" selection-end-line="141" selection-end-column="94" />
+            <state relative-caret-position="458">
+              <caret line="148" selection-start-line="148" selection-end-line="148" />
             </state>
           </provider>
         </entry>
@@ -279,58 +275,27 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/taskpackages/serializers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="327" selection-start-line="327" selection-end-line="327" />
+            <state relative-caret-position="175">
+              <caret line="323" lean-forward="true" selection-start-line="323" selection-end-line="323" />
               <folding>
                 <element signature="e#24#63#0" expanded="true" />
-                <marker date="1550126280832" expanded="true" signature="12324:12337" ph="..." />
-                <marker date="1550126280832" expanded="true" signature="20123:20160" ph="..." />
+                <marker date="1550220351489" expanded="true" signature="12324:12337" ph="..." />
+                <marker date="1550220351489" expanded="true" signature="20162:20199" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/celery_app/regionchunk.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="19">
-              <caret line="130" column="45" selection-start-line="130" selection-start-column="45" selection-end-line="130" selection-end-column="45" />
-              <folding>
-                <element signature="e#95#109#0" expanded="true" />
-                <marker date="1550124361669" expanded="true" signature="1471:1478" ph="..." />
-                <marker date="1550124361669" expanded="true" signature="3571:4325" ph="..." />
-                <marker date="1550124361669" expanded="true" signature="3939:3944" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/RGSManager/settings.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
-              <caret line="83" selection-start-line="83" selection-end-line="83" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/celery_app/createregiontask.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-351">
-              <caret line="13" selection-start-line="13" selection-end-line="13" />
+            <state relative-caret-position="194">
+              <caret line="118" column="6" lean-forward="true" selection-start-line="118" selection-start-column="6" selection-end-line="118" selection-end-column="6" />
               <folding>
                 <element signature="e#59#69#0" expanded="true" />
+                <marker date="1550222356479" expanded="true" signature="1637:6178" ph="..." />
+                <marker date="1550222356479" expanded="true" signature="5460:6162" ph="..." />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/celery_app/celeryconfig.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1276">
-              <caret line="58" selection-start-line="58" selection-end-line="58" />
             </state>
           </provider>
         </entry>
@@ -407,12 +372,12 @@
         <option value="$PROJECT_DIR$/utils/file_chunk.py" />
         <option value="$PROJECT_DIR$/RGSManager/urls.py" />
         <option value="$PROJECT_DIR$/taskpackages/views.py" />
-        <option value="$PROJECT_DIR$/taskpackages/models.py" />
         <option value="$PROJECT_DIR$/celery_app/clipfromsde.py" />
         <option value="$PROJECT_DIR$/celery_app/regionchunk.py" />
-        <option value="$PROJECT_DIR$/celery_app/createregiontask.py" />
-        <option value="$PROJECT_DIR$/taskpackages/serializers.py" />
         <option value="$PROJECT_DIR$/celery_app/celeryconfig.py" />
+        <option value="$PROJECT_DIR$/taskpackages/models.py" />
+        <option value="$PROJECT_DIR$/taskpackages/serializers.py" />
+        <option value="$PROJECT_DIR$/celery_app/createregiontask.py" />
       </list>
     </option>
   </component>
@@ -423,16 +388,15 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="953" />
+    <option name="x" value="300" />
     <option name="width" value="974" />
-    <option name="height" value="1047" />
+    <option name="height" value="1046" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -448,22 +412,18 @@
             <path>
               <item name="RGSManager" type="b2602c69:ProjectViewProjectNode" />
               <item name="RGSManager" type="462c0819:PsiDirectoryNode" />
-              <item name="RGSManager" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="RGSManager" type="b2602c69:ProjectViewProjectNode" />
-              <item name="RGSManager" type="462c0819:PsiDirectoryNode" />
               <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../test/RGSManager_duandian" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/createDBSDE" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
@@ -486,7 +446,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.createregiontask">
+  <component name="RunManager" selected="Django server.RGSManager">
     <configuration name="createregiontask" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="RGSManager" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -710,7 +670,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49932525" visible="true" weight="0.16845493" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49932525" visible="true" weight="0.17274678" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.5006748" weight="0.12403599" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -764,12 +724,23 @@
   <component name="XDebuggerManager">
     <watches-manager>
       <configuration name="Python.DjangoServer">
-        <watch expression="os.path.abspath(__file__)" language="Python" />
+        <watch expression="regiontask.id" language="Python" />
+        <watch expression="regiontask.file.path" language="Python" />
       </configuration>
     </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
+      <expression>
+        <expression-string>regiontask.file.path</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>regiontask.id</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>os.path.abspath(__file__)</expression-string>
         <language-id>Python</language-id>
@@ -802,21 +773,6 @@
       </expression>
       <expression>
         <expression-string>instance.filechunk</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>instance.filechunk.path</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>fromdir</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>len(files.values_list(&quot;filechunk&quot;))</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -954,9 +910,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="14" column="27" selection-start-line="14" selection-end-line="15" />
-          <folding>
-            <element signature="e#24#63#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -964,9 +917,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="110">
           <caret line="65" column="28" selection-start-line="65" selection-start-column="28" selection-end-line="65" selection-end-column="28" />
-          <folding>
-            <element signature="e#24#63#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -994,9 +944,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="22">
           <caret line="1" selection-start-line="1" selection-end-line="1" />
-          <folding>
-            <element signature="e#24#68#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1004,23 +951,27 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="86">
           <caret line="113" column="30" selection-start-line="113" selection-start-column="30" selection-end-line="113" selection-end-column="30" />
-          <folding>
-            <element signature="e#277#287#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/RGSManager/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
+        <state relative-caret-position="1804">
           <caret line="83" selection-start-line="83" selection-end-line="83" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/celery_app/celeryconfig.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="53" lean-forward="true" selection-start-line="53" selection-end-line="53" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/celery_app/regionchunk.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="130" column="45" selection-start-line="130" selection-start-column="45" selection-end-line="130" selection-end-column="45" />
+        <state relative-caret-position="130">
+          <caret line="121" column="41" lean-forward="true" selection-start-line="121" selection-start-column="41" selection-end-line="121" selection-end-column="41" />
           <folding>
             <element signature="e#95#109#0" expanded="true" />
             <marker date="1550124361669" expanded="true" signature="1471:1478" ph="..." />
@@ -1030,39 +981,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/celery_app/createregiontask.py">
+    <entry file="file://$PROJECT_DIR$/taskpackages/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-351">
-          <caret line="13" selection-start-line="13" selection-end-line="13" />
-          <folding>
-            <element signature="e#59#69#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="458">
+          <caret line="148" selection-start-line="148" selection-end-line="148" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/taskpackages/serializers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="327" selection-start-line="327" selection-end-line="327" />
+        <state relative-caret-position="175">
+          <caret line="323" lean-forward="true" selection-start-line="323" selection-end-line="323" />
           <folding>
             <element signature="e#24#63#0" expanded="true" />
-            <marker date="1550126280832" expanded="true" signature="12324:12337" ph="..." />
-            <marker date="1550126280832" expanded="true" signature="20123:20160" ph="..." />
+            <marker date="1550220351489" expanded="true" signature="12324:12337" ph="..." />
+            <marker date="1550220351489" expanded="true" signature="20162:20199" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/celery_app/celeryconfig.py">
+    <entry file="file://$PROJECT_DIR$/celery_app/createregiontask.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1276">
-          <caret line="58" selection-start-line="58" selection-end-line="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/taskpackages/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="141" column="94" lean-forward="true" selection-start-line="141" selection-start-column="94" selection-end-line="141" selection-end-column="94" />
+        <state relative-caret-position="194">
+          <caret line="118" column="6" lean-forward="true" selection-start-line="118" selection-start-column="6" selection-end-line="118" selection-end-column="6" />
+          <folding>
+            <element signature="e#59#69#0" expanded="true" />
+            <marker date="1550222356479" expanded="true" signature="1637:6178" ph="..." />
+            <marker date="1550222356479" expanded="true" signature="5460:6162" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>

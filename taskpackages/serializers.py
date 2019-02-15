@@ -314,7 +314,7 @@ class RegionTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = RegionTask
         fields = ["id", "name", "file", "status", "basemapservice", "mapindexfeatureservice", "mapindexmapservice",
-                  "mapindexschedulemapservice", "describe"]
+                  "mapindexschedulemapservice", "describe", "servicename"]
         extra_kwargs = {
             "basemapservice": {"read_only": True},
             "mapindexfeatureservice": {"read_only": True},
@@ -324,7 +324,7 @@ class RegionTaskSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         regiontask = RegionTask.objects.create(**validated_data)
-        createregiontask.delay(regiontask.id, regiontask.file.path)
+        createregiontask.delay(regiontask.id, regiontask.file.path, regiontask.servicename)
 
         return regiontask
 

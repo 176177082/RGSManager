@@ -4,10 +4,10 @@ import sys
 import os
 import arcpy
 import shutil
-from datetime import datetime
+import datetime
 import psycopg2
 from unrar import rarfile
-
+import time
 from celery_app import app
 from ziptools import zipUpFolder
 import zipfile
@@ -17,8 +17,7 @@ sys.setdefaultencoding('utf8')
 
 
 @app.task
-def createregiontask(regiontask_id, regiontask_filepath):
-
+def createregiontask(regiontask_id, regiontask_filepath, service_name):
     # 解压文件
     file_dir = os.path.dirname(regiontask_filepath)
     z = zipfile.is_zipfile(regiontask_filepath)
@@ -29,51 +28,153 @@ def createregiontask(regiontask_id, regiontask_filepath):
         for file in fz.namelist():
             fz.extract(file, file_dir)
         filename = regiontask_filepath.split("\\")[-1].split(".zip")[0]
-        unzipfile = os.path.join(file_dir, filename)
-        print unzipfile
+        file_path = os.path.join(file_dir, filename)
     elif r:
         fz = rarfile.RarFile(regiontask_filepath, 'r')
         for file in fz.namelist():
             fz.extract(file, file_dir)
         filename = regiontask_filepath.split("\\")[-1].split(".rar")[0]
-        unrarfile = os.path.join(file_dir, filename)
-        print unrarfile
+        file_path = os.path.join(file_dir, filename)
     else:
         print('This is not zip or rar')
         return False
 
-    # 修改关系库中的数据
-    tablename = u"taskpackages_regiontask"
-    status = u"处理完成"
-    basemapservice = u'basemapservice'
-    mapindexfeatureservice = u"mapindexfeatureservice"
-    mapindexmapservice = u"mapindexmapservice"
-    mapindexschedulemapservice = u"mapindexschedulemapservice"
+    time_ymdhms = datetime.datetime.now().strftime(u"%Y%m%d%H%M%S")
+    datatype = u"mapindex"
+    mapindexsde = datatype + time_ymdhms + u".sde"
 
+    # 创建空间库
+    ARCGIS_create_database(file_path, time_ymdhms, datatype)
 
-    change_db_regiontasktable(tablename, regiontask_id, status, basemapservice,
-                              mapindexfeatureservice, mapindexmapservice, mapindexschedulemapservice)
+    # 添加用于标记颜色的status字段
+    ARCGIS_add_field(mapindexsde)
+
+    # 发布服务
+    ARCGIS_service(service_name)
+
+    # 填充postgres中服务字段
+    Posrgres_change_regiontask(regiontask_id, service_name)
     return True
 
 
-def change_db_regiontasktable(tablename, regiontask_id, status, basemapservice,
-                              mapindexfeatureservice, mapindexmapservice, mapindexschedulemapservice):
+# 创建空间数据库
+def ARCGIS_create_database(gdbpath, time_ymdhms, datatype):
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+    authorization_file = os.path.join(SCRIPT_DIR, u"server10.2.ecp")
+    database_name = datatype + time_ymdhms
+    arcpy.AddMessage(database_name)
+    arcpy.CreateEnterpriseGeodatabase_management(database_platform=u"PostgreSQL", instance_name=u"localhost",
+                                                 database_name=database_name, account_authentication=u"DATABASE_AUTH",
+                                                 database_admin=u"postgres", database_admin_password=u"Lantucx2018",
+                                                 sde_schema=u"SDE_SCHEMA", gdb_admin_name=u"sde",
+                                                 gdb_admin_password=u"sde", tablespace_name=u"#",
+                                                 authorization_file=authorization_file)
+
+    connsdepath = SCRIPT_DIR
+    connsde = datatype + time_ymdhms + u".sde"
+    arcpy.AddMessage(connsde)
+    conn = {}
+    conn[u"out_folder_path"] = connsdepath
+    conn[u"out_name"] = connsde
+    conn[u"database_platform"] = u"PostgreSQL"
+    conn[u"instance"] = u"localhost"
+    conn[u"account_authentication"] = u"DATABASE_AUTH"
+    conn[u"database"] = database_name
+    conn[u"username"] = u"sde"
+    conn[u"password"] = u"sde"
+    conn[u"save_user_pass"] = u"SAVE_USERNAME"
+    arcpy.CreateDatabaseConnection_management(**conn)
+
+    arcpy.env.workspace = gdbpath
+    sdepath = os.path.join(SCRIPT_DIR, connsde)
+    for ds in arcpy.ListDatasets(feature_type=u'feature') + [u'']:
+        if ds != u'':
+            dspath = os.path.join(gdbpath, ds)
+            sdedspath = os.path.join(sdepath, ds)
+            arcpy.Copy_management(dspath, sdedspath)
+            arcpy.AddMessage(dspath)
+        else:
+            for fc in arcpy.ListFeatureClasses(feature_dataset=ds):
+                fcpath = os.path.join(gdbpath, ds, fc)
+                sdedspath = os.path.join(sdepath, ds, fc)
+                arcpy.Copy_management(fcpath, sdedspath)
+                arcpy.AddMessage(fcpath)
+
+    return True
+
+
+# 添加字段
+def ARCGIS_add_field(mapindexsde):
+    field_name = u'status'
+    jtbname = u'.GBmaprange'
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+    tablename = os.path.join(SCRIPT_DIR, mapindexsde, mapindexsde + u".DLG_50000", mapindexsde + jtbname)
+
+    arcpy.AddField_management(in_table=tablename, field_name=field_name, field_type="TEXT", field_precision="#",
+                              field_scale="#", field_length="#", field_alias="#", field_is_nullable="NULLABLE",
+                              field_is_required="NON_REQUIRED", field_domain="#")
+    print u"添加{0}字段成功".format(field_name)
+
+
+# 发布服务
+def ARCGIS_service(service_name):
+    print u"即将发布服务，请注册版本，修改所需字段属性并保存MXD文件"
+    time.sleep(180)
+    print u"开始发布服务"
+    MXD_name = service_name + u".mxd"
+    wrkspc = os.path.dirname(os.path.abspath(__file__)) + "\\"
+    mapDoc = arcpy.mapping.MapDocument(wrkspc + MXD_name)
+    con = "C:/Users/Administrator/AppData/Roaming/ESRI/Desktop10.2/ArcCatalog/arcgis on localhost_6080 (系统管理员).ags"
+    sddraft = wrkspc + service_name + '.sddraft'
+    sd = wrkspc + service_name + '.sd'
+    summary = 'Population Density by County'
+    tags = 'county, counties, population, density, census'
+
+    # 将地图文档(.mxd)文件转换为服务定义草稿(.sddraft)文件。
+    analysis = arcpy.mapping.CreateMapSDDraft(mapDoc, sddraft, service_name, 'ARCGIS_SERVER',
+                                              con, True, None, summary, tags)
+
+    # 如果sddraft分析不包含错误，则阶段化并上传服务
+    if analysis['errors'] == {}:
+        arcpy.StageService_server(sddraft, sd)
+        arcpy.UploadServiceDefinition_server(sd, con)
+        print u"服务发布成功"
+    else:
+        # 如果sddraft分析包含错误，则显示它们
+        print analysis['errors']
+
+
+# 修postgres数据库中regiontask表
+def Posrgres_change_regiontask(regiontask_id, service_name):
+    tablename = u"taskpackages_regiontask"
+    status = u"处理完成"
+    basemapservice = u'未指定'
+    mapindexfeatureservice = u"http://localhost:6080/arcgis/rest/services/" + service_name + u"/FeatureServer"
+    mapindexmapservice = u"http://localhost:6080/arcgis/rest/services/" + service_name + u"/MapServer"
+    mapindexschedulemapservice = u"未指定"
+
+    SQL = u"update %s set status='%s',basemapservice='%s',mapindexfeatureservice='%s',mapindexmapservice='%s',mapindexschedulemapservice='%s' where ID=%d" % (
+        tablename, status, basemapservice, mapindexfeatureservice, mapindexmapservice, mapindexschedulemapservice,
+        regiontask_id)
+    Postgres_change(SQL)
+    print u"postgres数据库更新成功"
+
+
+
+# postgres数据库通用
+def Postgres_change(SQL):
     conn = psycopg2.connect(dbname=u"mmanageV8.0",
                             user=u"postgres",
                             password=u"Lantucx2018",
                             host=u"localhost",
                             port=u"5432")
     cur = conn.cursor()
-    UPDATESQL = u"update %s set status='%s',basemapservice='%s',mapindexfeatureservice='%s',mapindexmapservice='%s',mapindexschedulemapservice='%s' where ID=%d" % (
-        tablename, status, basemapservice, mapindexfeatureservice, mapindexmapservice, mapindexschedulemapservice,regiontask_id)
-    cur.execute(UPDATESQL)
+    cur.execute(SQL)
     conn.commit()
     conn.close()
 
 
 if __name__ == "__main__":
-    id14 = u"D:\\code\\RGSManager\\media\\data\\2019\\02\\14\\2019-02-14-14-29-34-035000\\gb.gdb.zip"
-    id15 = u"D:\\code\\RGSManager\\media\\data\\2019\\02\\14\\2019-02-14-14-30-05-055000\\gb.gdb.rar"
-
-    # createregiontask(14, id14)
-    createregiontask(15, id15)
+    createregiontask(20, u'D:\\code\\RGSManager\\media\\data\\2019\\02\\15\\2019-02-15-09-50-39-830000\\mapnum.gdb.rar')
+    service_name = input(u"请输入服务名称：")
+    ARCGIS_service(service_name)
