@@ -11,7 +11,7 @@ sys.setdefaultencoding('utf8')
 
 def get_user_data(tablename):
     # 获取用户表数据
-    conn = psycopg2.connect(dbname="mmanageV6.0",
+    conn = psycopg2.connect(dbname="mmanageV7.0",
                             user="postgres",
                             password="Lantucx2018",
                             host="localhost",
@@ -31,7 +31,7 @@ def get_user_data(tablename):
 
 def user_insert(data, tablename):
     # users_user表数据的迁移
-    conn = psycopg2.connect(dbname="mmanageV7.0",
+    conn = psycopg2.connect(dbname="mmanageV8.0",
                             user="postgres",
                             password="Lantucx2018",
                             host="localhost",
@@ -48,7 +48,7 @@ def user_insert(data, tablename):
 
 def get_taskpackage_data(tablename):
     # 获取主任务包表数据
-    conn = psycopg2.connect(dbname="mmanageV6.0",
+    conn = psycopg2.connect(dbname="mmanageV7.0",
                             user="postgres",
                             password="Lantucx2018",
                             host="localhost",
@@ -75,7 +75,7 @@ def get_taskpackage_data(tablename):
 
 def taskpackage_insert(data):
     """taskpackages_taskpackage表数据的迁移"""
-    conn = psycopg2.connect(dbname="mmanageV7.0",
+    conn = psycopg2.connect(dbname="mmanageV8.0",
                             user="postgres",
                             password="Lantucx2018",
                             host="localhost",
@@ -99,7 +99,7 @@ def taskpackage_insert(data):
 
 def get_taskpackageson_data(tablename):
     # 获取子任务包表数据
-    conn = psycopg2.connect(dbname="mmanageV6.0",
+    conn = psycopg2.connect(dbname="mmanageV7.0",
                             user="postgres",
                             password="Lantucx2018",
                             host="localhost",
@@ -119,7 +119,7 @@ def get_taskpackageson_data(tablename):
 
 def taskpackageson_insert(data):
     # taskpackages_taskpackageson表数据的迁移
-    conn = psycopg2.connect(dbname="mmanageV7.0",
+    conn = psycopg2.connect(dbname="mmanageV8.0",
                             user="postgres",
                             password="Lantucx2018",
                             host="localhost",
@@ -136,7 +136,7 @@ def taskpackageson_insert(data):
 
 def get_taskpackageowner_data(tablename):
     # 获取@表数据
-    conn = psycopg2.connect(dbname="mmanageV6.0",
+    conn = psycopg2.connect(dbname="mmanageV7.0",
                             user="postgres",
                             password="Lantucx2018",
                             host="localhost",
@@ -156,7 +156,7 @@ def get_taskpackageowner_data(tablename):
 
 def taskpackageowner_insert(data):
     # taskpackages_taskpackageowner表数据的迁移
-    conn = psycopg2.connect(dbname="mmanageV7.0",
+    conn = psycopg2.connect(dbname="mmanageV8.0",
                             user="postgres",
                             password="Lantucx2018",
                             host="localhost",
@@ -176,7 +176,7 @@ def taskpackageowner_insert(data):
 
 def get_taskpackageschedule_data(tablename):
     # 获取进度表
-    conn = psycopg2.connect(dbname="mmanageV6.0",
+    conn = psycopg2.connect(dbname="mmanageV7.0",
                             user="postgres",
                             password="Lantucx2018",
                             host="localhost",
@@ -211,6 +211,48 @@ def taskpackageschedule_insert(data):
     conn.close()
 
 
+def get_taskpackageregiontask_data(tablename):
+    # 获取taskpackages_regiontask表数据
+    conn = psycopg2.connect(dbname="mmanageV7.0",
+                            user="postgres",
+                            password="Lantucx2018",
+                            host="localhost",
+                            port="5432")
+    cur = conn.cursor()
+    sql = u"select * from %s order by id" % tablename
+    cur.execute(sql)
+    while True:
+        taskpackageowner_data = cur.fetchone()
+        if taskpackageowner_data:
+            print taskpackageowner_data
+            taskpackageregiontask_insert(taskpackageowner_data)
+        else:
+            conn.close()
+            return
+
+
+def taskpackageregiontask_insert(data):
+    # taskpackages_regiontask表数据的迁移
+    conn = psycopg2.connect(dbname="mmanageV8.0",
+                            user="postgres",
+                            password="Lantucx2018",
+                            host="localhost",
+                            port="5432")
+    cur = conn.cursor()
+    print data
+    for a in data:
+        if a is None:
+            a = "0"
+    sql = u"insert into taskpackages_regiontask (name, file, basemapservice, mapindexfeatureservice, mapindexmapservice, mapindexschedulemapservice, status, mapindexsde, rgssde) values('%s','%s','%s','%s','%s','%s','%s','%s','%s')" % (data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9])
+          # u" ('%s','%s','%s','%s','%s','%s','%s','%s','%s',%r)" % (data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10])
+
+    print sql
+    cur.execute(sql)
+    conn.commit()
+
+    conn.close()
+
+
 if __name__ == '__main__':
     # 迁移users_user表时,需要去掉first_name,last_name, email,date_joined几个字段的非空约束
     # get_user_data("users_user")
@@ -225,7 +267,10 @@ if __name__ == '__main__':
     # get_taskpackageowner_data("taskpackages_taskpackageowner")
 
     # 迁移进度表
-    get_taskpackageschedule_data("taskpackages_taskpackagescheduleset")
+    # get_taskpackageschedule_data("taskpackages_taskpackagescheduleset")
+
+    # 迁移地图区域表
+    get_taskpackageregiontask_data("taskpackages_regiontask")
 
     # get_data()
     pass

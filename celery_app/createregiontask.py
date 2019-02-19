@@ -39,18 +39,30 @@ def createregiontask(regiontask_id, regiontask_filepath, service_name):
         print('This is not zip or rar')
         return False
 
+
     time_ymdhms = datetime.datetime.now().strftime(u"%Y%m%d%H%M%S")
-    datatype = u"mapindex"
-    mapindexsde = datatype + time_ymdhms + u".sde"
+    # os.listdir 返回指定目录下的所有文件和目录名。
+    dir_list = os.listdir(file_dir)
 
     # 创建空间库
-    ARCGIS_create_database(file_path, time_ymdhms, datatype)
+    for dir in dir_list:
+        print dir
+        gdbpath = os.path.join(file_dir, dir)
+        if dir.startswith(u"RGS"):
+            datatype = u"rgs"
+            ARCGIS_create_database(gdbpath, time_ymdhms, datatype)
+        elif dir.startswith(u"接图表"):
+            datatype = u"mapindex"
+            ARCGIS_create_database(gdbpath, time_ymdhms, datatype)
+
+    mapindexsde = "mapindex" + time_ymdhms + u".sde"
+
 
     # 添加用于标记颜色的status字段
     ARCGIS_add_field(mapindexsde)
-
+    print u"暂不可自动发服务，请手动修改字段所需属性，注册版本，保存MXD文件，注册PG数据源，共享服务"
     # 发布服务
-    ARCGIS_service(service_name)
+    # ARCGIS_service(service_name)
 
     # 填充postgres中服务字段
     Posrgres_change_regiontask(regiontask_id, service_name)
@@ -118,13 +130,16 @@ def ARCGIS_add_field(mapindexsde):
 
 # 发布服务
 def ARCGIS_service(service_name):
+
     print u"即将发布服务，请注册版本，修改所需字段属性并保存MXD文件"
-    time.sleep(180)
+    # time.sleep(300)
     print u"开始发布服务"
     MXD_name = service_name + u".mxd"
     wrkspc = os.path.dirname(os.path.abspath(__file__)) + "\\"
+    print wrkspc + MXD_name
     mapDoc = arcpy.mapping.MapDocument(wrkspc + MXD_name)
-    con = "C:/Users/Administrator/AppData/Roaming/ESRI/Desktop10.2/ArcCatalog/arcgis on localhost_6080 (系统管理员).ags"
+    # con = "C:/Users/Administrator/AppData/Roaming/ESRI/Desktop10.2/ArcCatalog/arcgis on localhost_6080 (系统管理员).ags"
+    con = "C:/Users/Administrator/AppData/Roaming/ESRI/Desktop10.2/ArcCatalog/arcgis on 192.168.3.120_6080 (系统管理员).ags"
     sddraft = wrkspc + service_name + '.sddraft'
     sd = wrkspc + service_name + '.sd'
     summary = 'Population Density by County'
@@ -148,9 +163,9 @@ def ARCGIS_service(service_name):
 def Posrgres_change_regiontask(regiontask_id, service_name):
     tablename = u"taskpackages_regiontask"
     status = u"处理完成"
-    basemapservice = u'未指定'
-    mapindexfeatureservice = u"http://localhost:6080/arcgis/rest/services/" + service_name + u"/FeatureServer"
-    mapindexmapservice = u"http://localhost:6080/arcgis/rest/services/" + service_name + u"/MapServer"
+    basemapservice = u"http://192.168.3.120:6080/arcgis/rest/services/ditu/MapServer"
+    mapindexfeatureservice = u"http://192.168.3.120:6080/arcgis/rest/services/" + service_name + u"/FeatureServer"
+    mapindexmapservice = u"http://192.168.3.120:6080/arcgis/rest/services/" + service_name + u"/MapServer"
     mapindexschedulemapservice = u"未指定"
 
     SQL = u"update %s set status='%s',basemapservice='%s',mapindexfeatureservice='%s',mapindexmapservice='%s',mapindexschedulemapservice='%s' where ID=%d" % (
@@ -158,6 +173,7 @@ def Posrgres_change_regiontask(regiontask_id, service_name):
         regiontask_id)
     Postgres_change(SQL)
     print u"postgres数据库更新成功"
+
 
 
 
@@ -175,6 +191,7 @@ def Postgres_change(SQL):
 
 
 if __name__ == "__main__":
-    createregiontask(20, u'D:\\code\\RGSManager\\media\\data\\2019\\02\\15\\2019-02-15-09-50-39-830000\\mapnum.gdb.rar')
-    service_name = input(u"请输入服务名称：")
+    service_name = "test05"
+
+    # createregiontask(5, u'G:/RGSManager/media/data/2019/02/18/2019-02-18-15-22-09-831000/arcgis数据库.rar', service_name)
     ARCGIS_service(service_name)

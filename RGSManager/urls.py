@@ -39,7 +39,7 @@ router.register(r'echarttaskpackages', EchartTaskpackageViewSet, base_name='echa
 router.register(r'echartschedules', EchartScheduleViewSet, base_name='echartschedules')
 router.register(r'schedule', ScheduleViewSet, base_name='schedule')
 router.register(r'regiontasks', RegionTaskView, base_name='regiontasks')
-router.register(r'regiontaskschunk', RegionTaskChunkUploadView, base_name='regiontaskschunk')
+# router.register(r'regiontaskschunk', RegionTaskChunkUploadView, base_name='regiontaskschunk')
 
 
 urlpatterns = [

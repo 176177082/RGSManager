@@ -17,7 +17,6 @@ from .serializers import TaskPackageSerializer, TaskPackageSonSerializer, TaskPa
     EchartTaskpackageSerializer, EchartScheduleSerializer, ScheduleSerializer, RegionTaskSerializer, \
     RegionTaskChunkSerializer
 
-
 class TaskPackagePagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = 'limit'
@@ -236,7 +235,7 @@ class ScheduleViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.Upd
             return TaskPackageScheduleSet.objects.all()
 
 
-class RegionTaskView(mixins.ListModelMixin, mixins.CreateModelMixin, GenericViewSet):
+class RegionTaskView(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, GenericViewSet):
     """
     list: 获取所有任务区域;如果传递了区域名字regiontask_name参数,则值返回对应区域的信息
     create: 创建任务区域
@@ -256,8 +255,11 @@ class RegionTaskView(mixins.ListModelMixin, mixins.CreateModelMixin, GenericView
                 return RegionTask.objects.filter(name=regiontask_name).order_by('id')
             else:
                 return RegionTask.objects.all().order_by('id')
+        elif self.action=="update":
+            return RegionTask.objects.filter(id = self.request.parser_context["kwargs"]["pk"])
         else:
             return None
+
 
 class RegionTaskChunkUploadView(mixins.ListModelMixin, mixins.CreateModelMixin, GenericViewSet):
     """

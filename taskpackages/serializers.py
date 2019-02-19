@@ -314,19 +314,24 @@ class RegionTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = RegionTask
         fields = ["id", "name", "file", "status", "basemapservice", "mapindexfeatureservice", "mapindexmapservice",
-                  "mapindexschedulemapservice", "describe", "servicename"]
+                  "mapindexschedulemapservice", "describe", "createtime"]
         extra_kwargs = {
             "basemapservice": {"read_only": True},
             "mapindexfeatureservice": {"read_only": True},
             "mapindexmapservice": {"read_only": True},
             "mapindexschedulemapservice": {"read_only": True},
+            "createtime": {"format": '%Y-%m-%d %H:%M:%S'},
         }
 
     def create(self, validated_data):
         regiontask = RegionTask.objects.create(**validated_data)
-        createregiontask.delay(regiontask.id, regiontask.file.path, regiontask.servicename)
-
         return regiontask
+
+    def update(self, instance, validated_data):
+        regiontask = super(RegionTaskSerializer, self).update(instance, validated_data)
+        createregiontask.delay(regiontask.id, regiontask.file.path, regiontask.name)
+        return regiontask
+
 
 
 class RegionTaskChunkSerializer(serializers.ModelSerializer):
